@@ -61,5 +61,5 @@ jobs:
       run: |
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
-        kubectl rollout status deployment/my-app
+        kubectl rollout status k8s/deployment/my-app
       shell: bash
