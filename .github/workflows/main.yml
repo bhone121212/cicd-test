@@ -30,7 +30,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/cicd1:${{ github.sha }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,13 +45,15 @@ jobs:
       with:
         version: 'latest'
 
-    - name: Get kubeconfig
-      env:
-        KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > $KUBECONFIG
+    - name: Decode and set up kubeconfig
+      run: |
+        echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+        kubectl config view
+      shell: bash
 
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
         kubectl rollout status deployment/my-app
+      shell: bash
