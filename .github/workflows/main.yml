@@ -42,11 +42,18 @@ jobs:
     - name: Set up K8s
       run: echo "${{ secrets.KUBECONFIG_CONTENT }}" > $GITHUB_WORKSPACE/KUBECONFIG
 
+    - name: Debug KUBECONFIG file
+      run: cat $GITHUB_WORKSPACE/KUBECONFIG
+
+    - name: Validate K8s Connection
+      run: |
+        export KUBECONFIG=$GITHUB_WORKSPACE/KUBECONFIG
+        kubectl cluster-info
+        kubectl get nodes
+
     - name: Apply Kubernetes manifests
-      working-directory: k8s  # Adjust this to the actual directory containing your YAML files
+      working-directory: k8s
       run: |
         export KUBECONFIG=$GITHUB_WORKSPACE/KUBECONFIG
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
-
-
