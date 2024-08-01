@@ -40,12 +40,13 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
     - name: Set up K8s
-      run: echo "${{ secrets.KUBECONFIG_CONTENT }}" > KUBECONFIG
+      run: echo "${{ secrets.KUBECONFIG_CONTENT }}" > $GITHUB_WORKSPACE/KUBECONFIG
 
     - name: Apply Kubernetes manifests
-      working-directory: ./home/kitty/  # Adjust this to the actual directory containing your YAML files
+      working-directory: k8s  # Adjust this to the actual directory containing your YAML files
       run: |
-        export KUBECONFIG=$PWD/../KUBECONFIG  # Adjust the path based on the relative location of the KUBECONFIG file
+        export KUBECONFIG=$GITHUB_WORKSPACE/KUBECONFIG
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
+
 
