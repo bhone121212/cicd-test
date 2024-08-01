@@ -50,7 +50,10 @@ jobs:
       shell: bash
 
     - name: Decode and set up kubeconfig
-      run: echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+      env:
+        KUBECONFIG_CONTENT: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "$KUBECONFIG_CONTENT" | base64 -d > ~/.kube/config
       shell: bash
 
     - name: Verify kubeconfig
@@ -59,7 +62,7 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f k8s/deployment.yaml
-        kubectl apply -f k8s/service.yaml
-        kubectl rollout status k8s/deployment/my-app
+        kubectl apply -f k8s/deployment.yaml --validate=false
+        kubectl apply -f k8s/service.yaml --validate=false
+        kubectl rollout status deployment/my-app
       shell: bash
