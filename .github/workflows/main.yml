@@ -65,7 +65,7 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > id_rsa
         chmod 600 id_rsa
-        ssh -N -L 6443:$K8S_MASTER_IP:6443 $BASTION_USER@$BASTION_HOST -i id_rsa &
+        nohup ssh -o StrictHostKeyChecking=no -N -L 6443:$K8S_MASTER_IP:6443 $BASTION_USER@$BASTION_HOST -i id_rsa &
         sleep 10
       shell: bash
 
