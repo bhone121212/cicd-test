@@ -40,10 +40,12 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
 
     - name: Set up K8s
-      run: echo "${{ secrets.KUBECONFIG_CONTENT }}" > $GITHUB_WORKSPACE/KUBECONFIG
+      run: echo "${{ secrets.KUBECONFIG_CONTENT }}" | base64 --decode > $GITHUB_WORKSPACE/KUBECONFIG
 
     - name: Debug KUBECONFIG file
-      run: cat $GITHUB_WORKSPACE/KUBECONFIG
+      run: |
+        cat $GITHUB_WORKSPACE/KUBECONFIG
+        kubectl config view
 
     - name: Validate K8s Connection
       run: |
