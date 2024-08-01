@@ -61,7 +61,7 @@ jobs:
       shell: bash
 
     - name: Verify connectivity to Kubernetes API server
-      run: curl -k https://192.168.11.70:6443
+      run: curl -k https://<public-ip-of-your-k8s-api-server>:6443
       shell: bash
 
     - name: Deploy to Kubernetes
