@@ -56,6 +56,19 @@ jobs:
         echo "$KUBECONFIG_CONTENT" | base64 -d > ~/.kube/config
       shell: bash
 
+    - name: Set up SSH tunnel
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        K8S_MASTER_IP: 192.168.11.70
+        BASTION_HOST: <bastion-host-ip>
+        BASTION_USER: <bastion-host-user>
+      run: |
+        echo "$SSH_PRIVATE_KEY" > id_rsa
+        chmod 600 id_rsa
+        ssh -N -L 6443:$K8S_MASTER_IP:6443 $BASTION_USER@$BASTION_HOST -i id_rsa &
+        sleep 10
+      shell: bash
+
     - name: Verify kubeconfig
       run: kubectl config view
       shell: bash
