@@ -64,13 +64,6 @@ jobs:
       run: curl -k https://192.168.11.70:6443
       shell: bash
 
-    - name: Deploy Ngrok
-      run: |
-        kubectl apply -f k8s/ngrok-deployment.yaml --validate=false
-        kubectl apply -f k8s/ngrok-service.yaml --validate=false
-        kubectl rollout status deployment/ngrok
-      shell: bash
-
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f k8s/deployment.yaml --validate=false
@@ -78,12 +71,3 @@ jobs:
         kubectl rollout status deployment/my-app
       shell: bash
 
-    - name: Get Node IP
-      id: get_node_ip
-      run: |
-        NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-        echo "NODE_IP=$NODE_IP" >> $GITHUB_ENV
-
-    - name: Test Deployment
-      run: |
-        curl -sL -w "%{http_code}\\n" "http://${{ env.NODE_IP }}:30080" -o /dev/null
