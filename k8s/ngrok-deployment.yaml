@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngrok
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ngrok
+  template:
+    metadata:
+      labels:
+        app: ngrok
+    spec:
+      containers:
+      - name: ngrok
+        image: wernight/ngrok
+        env:
+        - name: NGROK_AUTHTOKEN
+          value: "2kCR3ALkX6B2Cnyz6vNIXRVDktK_7NHev74Qb7SKpZooqQjvV"  # Replace with your Ngrok auth token
+        - name: NGROK_TUNNEL_ADDR
+          value: "http://my-app:3000"  # Replace with your service address
+        ports:
+        - containerPort: 4040  # Ngrok web interface port
