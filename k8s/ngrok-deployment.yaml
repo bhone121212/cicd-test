@@ -19,6 +19,6 @@ spec:
         - name: NGROK_AUTHTOKEN
           value: "2kCR3ALkX6B2Cnyz6vNIXRVDktK_7NHev74Qb7SKpZooqQjvV"  # Replace with your Ngrok auth token
         - name: NGROK_TUNNEL_ADDR
-          value: "http://my-app:3000"  # Replace with your service address
+          value: "http://my-app:31680"  # Replace with your service address
         ports:
         - containerPort: 4040  # Ngrok web interface port
