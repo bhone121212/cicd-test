@@ -60,10 +60,7 @@ jobs:
       run: kubectl config view
       shell: bash
 
-    - name: Verify connectivity to Kubernetes API server
-      run: curl -k https://192.168.11.70:6443
-      shell: bash
-
+    
     - name: Deploy Ngrok
       run: |
         kubectl apply -f k8s/ngrok-deployment.yaml --validate=false
